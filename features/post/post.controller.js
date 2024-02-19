@@ -11,7 +11,7 @@ export default class PostController{
     }
 
     getByPid(req, res){
-        const pid = req.params.pid;
+        const pid = req.params.id;
         const post = PostModel.getByPid(pid);
         if(post)
             return res.status(200).send(post);
@@ -26,5 +26,27 @@ export default class PostController{
             return res.status(200).send(posts);
         else
             return res.status(404).send("No posts found");        
+    }
+
+    create(req, res){
+        const post = PostModel.add(req.body);
+        if(post)
+            return res.status(201).send(post);
+        return res.status(400).send("error");
+    }
+
+    delete(req, res){
+        const post = PostModel.delete(req.params.id);
+        if(post)
+            return res.status(200).send(post);
+        else
+            return res.status(404).send("not found");
+    }
+
+    update(req, res){
+        const post = PostModel.put(req.params.id, req.body);
+        if(post)
+            return res.status(200).send(post);
+        return res.status(404).send("not found");
     }
 }

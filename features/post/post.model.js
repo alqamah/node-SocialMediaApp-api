@@ -46,6 +46,7 @@ export default class PostModel{
             posts[postind].caption = post.imageUrl;
             return posts[postind];
         }else{
+            console.log('nf');
             return null;
         }
     }

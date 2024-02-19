@@ -9,9 +9,12 @@ const router = express.Router();
 const postController = new PostController();
 
 router.use(jwtAuth);
+
 router.get('/all', postController.getall);
 router.get('/:pid', postController.getByPid);
 router.get('/', postController.getByUid);
-
+router.post('/', postController.create);
+router.put('/:id',postController.update);
+router.delete('/:id', postController.delete);
 
 export default router;
