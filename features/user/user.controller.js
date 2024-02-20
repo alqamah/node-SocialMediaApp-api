@@ -25,9 +25,10 @@ export default class UserController {
             {email: user.email}, //payload
             "secretkey", //signature
         )
+        
         res.cookie('jwtToken',token);
-        res.cookie('email',user.email);
-        console.log(res.email);
+        res.cookie('uid',user.id);
+
         return  res.status(201).send("User signed in successfully");
     }
 }

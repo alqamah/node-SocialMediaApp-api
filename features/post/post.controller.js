@@ -20,8 +20,8 @@ export default class PostController{
     }
 
     getByUid(req, res){
-        const email = req.cookies.email;
-        const posts = PostModel.getByUid(email);
+        const uid = req.cookies.uid;
+        const posts = PostModel.getByUid(uid);
         if(posts)
             return res.status(200).send(posts);
         else

@@ -11,10 +11,7 @@ export default class PostModel{
         return posts;
     }
 
-    static getByUid(email){
-        const users = UserModel.getAll();
-        const uid = users.find(user => user.email == email).id;
-        console.log(uid);
+    static getByUid(uid){
         return posts.filter(post => post.userId == uid);
     }
 
