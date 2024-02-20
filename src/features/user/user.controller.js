@@ -29,6 +29,6 @@ export default class UserController {
         res.cookie('jwtToken',token);
         res.cookie('uid',user.id);
 
-        return  res.status(201).send("User signed in successfully. User ID: " + user.id);   
+        return  res.status(200).send("User signed in successfully. User ID: " + user.id);   
     }
 }

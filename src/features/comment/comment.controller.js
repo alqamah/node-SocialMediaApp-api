@@ -33,7 +33,7 @@ export default class CommentController{
         const uid = req.cookies.uid;
         const result = CommentModel.put(uid, cid, req.body);
         if(result)
-            return res.status(200).send(result);
+            return res.status(201).send(result);
         return res.status(404).send("comment not found or access denied");
     }
 

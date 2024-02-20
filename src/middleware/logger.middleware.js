@@ -10,17 +10,21 @@ const logger = winston.createLogger({
     ]
 });
 
+export const errorLogger = winston.createLogger({
+    level:'error',
+    format: winston.format.json(),
+    defaultMeta:{service:'error-logging'},
+    transports:[
+        new winston.transports.File({filename: './log/error.log'})
+    ]
+});
+
 const loggerMiddleware = async (req, res, next) => {
-    console.log('logger middleware');
-    if(req.url.includes('user')){
-        console.log('user middleware');
-        next();
-    }
+    if(req.url.includes("/user"))
+        return next();
     const logData = `${new Date().toTimeString()}: ${req.url} - ${JSON.stringify(req.body)}\n`;
     logger.info(logData);
-    console.log(logData);
     next();
 }
-
 
 export default loggerMiddleware;

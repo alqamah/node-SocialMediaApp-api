@@ -2,6 +2,8 @@ import express from "express";
 import cookieParser from "cookie-parser";
 
 import loggerMiddleware from "./src/middleware/logger.middleware.js";
+import {errorHandlerMiddleware} from "./src/middleware/errorhandler.middleware.js";
+import { invalidRouterMiddleware } from "./src/middleware/invalidroutes.middleware.js";
 
 import UserRouter from "./src/features/user/user.routes.js";
 import PostRouter from "./src/features/post/post.routes.js";
@@ -18,5 +20,8 @@ app.use('/api/user', UserRouter);
 app.use('/api/post', PostRouter);
 app.use('/api/comment', CommentRouter);
 app.use('/api/like', LikeRouter);
+
+app.use(invalidRouterMiddleware);
+app.use(errorHandlerMiddleware);
 
 export default app;
