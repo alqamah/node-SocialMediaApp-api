@@ -50,6 +50,7 @@ export default class PostModel{
 }
 
 let posts = [
+    //id, uid, caption, imageUrl
     new PostModel(1, 1, "post 1 caption", "post1.jpg"),
     new PostModel(2, 1, "post 2 caption", "post2.jpg"),
     new PostModel(3, 2, "post 3 caption", "post3.jpg"),
