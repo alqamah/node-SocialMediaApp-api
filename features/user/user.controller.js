@@ -11,14 +11,14 @@ export default class UserController {
     }
 
     signUp(req, res) {  
-        UserModel.signup(req.body);
-        res.status(201).send("User created successfully");
+        const user = UserModel.signup(req.body);
+        res.status(201).send("User created successfully. User ID: " + user.id); 
     }
 
     signIn(req, res) {
         const user = UserModel.signin(req.body.email, req.body.password);
         if(!user)
-            res.status(401).send("Invalid email or password");  
+            res.status(401).send("Invalid email or password.");  
         
         //1. create a token 
         const token = jwt.sign(
@@ -29,6 +29,6 @@ export default class UserController {
         res.cookie('jwtToken',token);
         res.cookie('uid',user.id);
 
-        return  res.status(201).send("User signed in successfully");
+        return  res.status(201).send("User signed in successfully. User ID: " + user.id);   
     }
 }

@@ -9,7 +9,8 @@ export class UserModel{
     static signup(user){
         const newUser = new UserModel(user.name, user.email, user.password, user.userType);
         newUser.id = users.length + 1;
-        users.push(newUser);    
+        users.push(newUser);
+        return newUser;    
     }
 
     static signin(email, password){

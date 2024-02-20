@@ -12,7 +12,7 @@ export default class PostController{
     }
 
     getByPid(req, res){
-        const pid = req.params.id;
+        const pid = req.params.pid;
         const post = PostModel.getByPid(pid);
         if(post)
             return res.status(200).send(post);
@@ -43,7 +43,7 @@ export default class PostController{
         if(post)
             return res.status(200).send(post);
         else
-            return res.status(404).send("not found");
+            return res.status(404).send("post not found or access denied");
     }
 
     update(req, res){
@@ -52,6 +52,6 @@ export default class PostController{
         const result = PostModel.put(uid, req.params.id, post);
         if(result)
             return res.status(200).send(result);
-        return res.status(404).send("not found");
+        return res.status(404).send("post not found or access denied");
     }
 }
