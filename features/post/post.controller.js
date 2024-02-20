@@ -1,4 +1,5 @@
 import PostModel from './post.model.js';
+import { UserModel } from '../user/user.model.js';
 
 export default class PostController{
 
@@ -29,14 +30,16 @@ export default class PostController{
     }
 
     create(req, res){
-        const post = PostModel.add(req.body);
-        if(post)
-            return res.status(201).send(post);
+        const post = req.body;
+        post.userId = Number(req.cookies.uid);
+        const result = PostModel.add(req.body);
+        if(result)
+            return res.status(201).send(result);
         return res.status(400).send("error");
     }
 
     delete(req, res){
-        const post = PostModel.delete(req.params.id);
+        const post = PostModel.delete(req.params.id, Number(req.cookies.uid));
         if(post)
             return res.status(200).send(post);
         else
@@ -44,9 +47,11 @@ export default class PostController{
     }
 
     update(req, res){
-        const post = PostModel.put(req.params.id, req.body);
-        if(post)
-            return res.status(200).send(post);
+        const post = req.body;
+        const uid = Number(req.cookies.uid);
+        const result = PostModel.put(uid, req.params.id, post);
+        if(result)
+            return res.status(200).send(result);
         return res.status(404).send("not found");
     }
 }

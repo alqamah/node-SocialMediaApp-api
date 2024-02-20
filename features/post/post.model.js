@@ -26,9 +26,9 @@ export default class PostModel{
         return newPost;
     }
 
-    static delete(pid){
+    static delete(pid, uid){
         const post = posts.find(post => post.id == pid);
-        if(post){
+        if (post && post.userId == uid){
             posts.splice(posts.indexOf(post), 1);
             return post;
         }else{
@@ -36,14 +36,13 @@ export default class PostModel{
         }
     }
 
-    static put(pid, post){
+    static put(uid, pid, post){
         const postind = posts.findIndex(post => post.id == pid);
-        if(postind!= -1){
+        if(postind!= -1 && posts[postind].userId == uid){
             posts[postind].caption = post.caption;
             posts[postind].caption = post.imageUrl;
             return posts[postind];
         }else{
-            console.log('nf');
             return null;
         }
     }
