@@ -2,7 +2,7 @@
 
 import express from 'express'
 import LikeController from './like.controller.js';
-import jwtAuth from '../middleware/jwtauth.middleware.js';
+import jwtAuth from '../../middleware/jwtauth.middleware.js';
 
 const router = express.Router();
 

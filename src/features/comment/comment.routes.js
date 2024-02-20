@@ -3,7 +3,7 @@
 import express from 'express'
 import CommentController from './comment.controller.js';
 //import {upload} from '../../middlewares/file-upload.middleware.js';
-import jwtAuth from '../middleware/jwtauth.middleware.js';
+import jwtAuth from '../../middleware/jwtauth.middleware.js';
 const router = express.Router();
 
 const commentController = new CommentController();
