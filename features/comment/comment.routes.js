@@ -8,7 +8,7 @@ const router = express.Router();
 
 const commentController = new CommentController();
 
-//router.use(jwtAuth);
+router.use(jwtAuth);
 
 router.get('/all', commentController.getall);
 router.get('/:pid', commentController.getByPid);

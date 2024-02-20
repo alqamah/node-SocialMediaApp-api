@@ -1,4 +1,5 @@
 
+import PostModel from "../post/post.model.js";
 export default class CommentModel{
     constructor(id, userId, postId, content){
         this.id = id;
@@ -16,30 +17,34 @@ export default class CommentModel{
         return ncomments;
     }
 
-    static post(uid,pid,comment){
+    static post(uid,pid,content){
         const id = comments.length + 1;
-        const newComment = new CommentModel(id, uid, pid, comment.content);
+        const posts = PostModel.getall();
+        const post = posts.find(post => post.id == pid);
+        if(!post)
+            return null;
+        const newComment = new CommentModel(id, uid, pid, content);
         comments.push(newComment);
         return newComment;
     }
 
-    static delete(cid){
-        const ind = comments.findIndex(comment => comment.id == cid);
-        if(ind!= -1){
-            comments.splice(ind, 1);
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-    static put(cid, comment){ 
-        const ind = comments.findIndex(comment => comment.id == cid);
+    static put(uid, cid, comment){ 
+        const ind = comments.findIndex(comment => comment.id == cid && comment.userId == uid);
         if(ind!= -1){
             comments[ind].content = comment.content;
             return comments[ind];
         }else{
             return null;
+        }
+    }
+
+    static delete(cid, uid){
+        const ind = comments.findIndex(comment => comment.id == cid && comment.userId == uid);
+        if(ind!= -1){
+            comments.splice(ind, 1);
+            return true;
+        }else{
+            return false;
         }
     }
    
