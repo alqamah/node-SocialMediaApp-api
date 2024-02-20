@@ -8,7 +8,7 @@ export class customErrorHandler extends Error {
 }
 
 export const errorHandlerMiddleware = (err, req, res, next) => {
-    // Write your code here
+    console.log(err);
     errorLogger.log({
       level: 'error',
       timestamp: new Date().toISOString(),

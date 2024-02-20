@@ -30,9 +30,12 @@ export default class PostController{
     }
 
     create(req, res){
-        const post = req.body;
-        post.userId = Number(req.cookies.uid);
-        const result = PostModel.add(req.body);
+        const post ={
+            userId: Number(req.cookies.uid),
+            content: req.body.content,
+            imageUrl: req.file.filename,
+        }
+        const result = PostModel.add(post);
         if(result)
             return res.status(201).send(result);
         return res.status(400).send("error");
@@ -49,6 +52,7 @@ export default class PostController{
     update(req, res){
         const post = req.body;
         const uid = Number(req.cookies.uid);
+        post.imageUrl = req.file.imageUrl;
         const result = PostModel.put(uid, req.params.id, post);
         if(result)
             return res.status(200).send(result);

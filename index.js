@@ -1,5 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
 
 import loggerMiddleware from "./src/middleware/logger.middleware.js";
 import {errorHandlerMiddleware} from "./src/middleware/errorhandler.middleware.js";
@@ -12,7 +13,7 @@ import LikeRouter from "./src/features/like/like.routes.js";
 
 const app = express();
 
-app.use(express.json());
+app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(loggerMiddleware);
 
