@@ -4,12 +4,11 @@ import bcrypt from "bcrypt";
 
 export default class UserController {
     
-
     async signUp(req, res) {
         try{
-            const { name, email, password} = req.body;
+            const { name, email, password, gender} = req.body;
             password = await bcrypt.hash(password, 10);
-            const user = await UserRepository.signUp({name, email, password});
+            const user = await UserRepository.signUp({name, email, password, gender});
             if(user)
                 return res.status(201).send({msg: "User created successfully", data: user});
             else
