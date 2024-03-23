@@ -1,44 +1,60 @@
-import PostModel from './post.model.js';
+import PostRepository from './post.repo.js';
 import { UserModel } from '../user/user.model.js';
 
 export default class PostController{
 
     getall(req, res){
-        const posts = PostModel.getall();
-        if(posts)
-            return res.status(200).send(posts);
-        else
-            return res.status(404).send("No posts found");
+        try{
+            const posts = PostRepository.getall();
+            if(posts)
+                return res.status(200).send(posts);
+            else
+                return res.status(404).send("No posts found");
+        }catch(err){
+            return res.status(500).send(err.message);
+        }
     }
 
     getByPid(req, res){
-        const pid = req.params.pid;
-        const post = PostModel.getByPid(pid);
-        if(post)
-            return res.status(200).send(post);
-        else
-            return res.status(404).send("No post found");
+        try{
+            const pid = req.params.pid;
+            const post = PostRepository.getByPid(pid);
+            if(post)
+                return res.status(200).send(post);
+            else
+                return res.status(404).send("No post found");
+        }catch(err){
+            return res.status(500).send(err.message);
+        }
     }
 
     getByUid(req, res){
-        const uid = req.cookies.uid;
-        const posts = PostModel.getByUid(uid);
-        if(posts)
-            return res.status(200).send(posts);
-        else
-            return res.status(404).send("No posts found");        
+        try{
+            const uid = req.cookies.uid;
+            const posts = PostRepository.getByUid(uid);
+            if(posts)
+                return res.status(200).send(posts);
+            else
+                return res.status(404).send("No posts found");   
+        } catch(err){
+            return res.status(500).send(err.message);
+        }
     }
 
     create(req, res){
-        const post ={
-            userId: Number(req.cookies.uid),
-            content: req.body.content,
-            imageUrl: req.file.filename,
+        try{
+            const post ={
+                userId: Number(req.cookies.userId),
+                caption: req.body.caption,
+                imageUrl: req.file.filename,
+            }
+            const result = PostRepository.add(post);
+            if(result)
+                return res.status(201).send(result);
+            return res.status(400).send("error");
+        }catch(err){
+            return res.status(500).send(err.message);
         }
-        const result = PostModel.add(post);
-        if(result)
-            return res.status(201).send(result);
-        return res.status(400).send("error");
     }
 
     delete(req, res){
