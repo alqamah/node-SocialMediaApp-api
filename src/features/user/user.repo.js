@@ -28,6 +28,7 @@ export default class UserRepository{
             let user = await UserModel.find(email);
             user.password = password;
             await user.save();
+            return user;
         }catch(err){
             throw err;
         }

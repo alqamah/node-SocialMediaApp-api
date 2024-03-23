@@ -11,7 +11,7 @@ export default class UserController {
             password = await bcrypt.hash(password, 10);
             const user = await UserRepository.signUp({name, email, password});
             if(user)
-                return res.status(201).send({msg: "User created successfully"});
+                return res.status(201).send({msg: "User created successfully", data: user});
             else
                 return res.status(400).send({msg: "Error in user creation"});
         }catch(err){
@@ -32,7 +32,7 @@ export default class UserController {
                     );
                     res.cookie('jwtToken', token, {httpOnly: true});
                     res.cookie.userId = user.id;
-                    return res.status(200).send({msg: "User logged in successfully"});
+                    return res.status(200).send({msg: "User logged in successfully", data: user});
                 }else{
                     return res.status(401).send({msg: "Invalid password"});
                 }
@@ -42,5 +42,25 @@ export default class UserController {
         }catch(err){
             res.send(400).send(err);
         }       
+    }
+
+    async resetPassword(req, res){
+        try {
+            const {password, id} = req.body;
+            password = await bcrypt.hash(password, 10);
+            const user = await UserRepository.resetPassword(id, password);
+            return res.status(200).send({msg: "Password reset successfully", data: user});
+        }catch(err){
+            return res.status(400).send({msg: err.message});
+        }
+    }
+
+    async logout(res, res){
+        try{
+            res.clearCookie('jwtToken');
+            return res.status(200).send({msg: "User logged out successfully"});
+        }catch(err){
+            return res.status(400).send({msg: "Error logging out user"});
+        }
     }
 }
