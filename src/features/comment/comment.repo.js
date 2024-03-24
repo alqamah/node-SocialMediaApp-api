@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 import { commentSchema } from "./comment.schema.js";
+import PostRepository from "../post/post.repo.js";
 
 const CommentModel = mongoose.model("Comment", commentSchema);
+
 
 export default class CommentRepository {
     async getall() {
@@ -34,12 +36,12 @@ export default class CommentRepository {
 
     async updateComment(uid, cid, content) {
         try {
-            const updatedComment = await CommentModel.findOneAndUpdate(
-                { _id: cid, userId: uid },
-                { content },
-                { new: true }
-            );
-            if (!updatedComment) throw new Error("Comment not found or access denied");
+            const auth = await this.authenticateUser(uid, cid);
+            if(!auth)
+                throw new Error("Unauthorized");
+            const comment = await CommentModel.findById(cid);
+            comment.content = content;
+            const updatedComment = await comment.save();
             return updatedComment;
         } catch (err) {
             throw err;
@@ -48,10 +50,28 @@ export default class CommentRepository {
 
     async deleteComment(uid, cid) {
         try {
-            const result = await CommentModel.findOneAndDelete({ _id: cid, userId: uid });
-            if (!result) throw new Error("Comment not found or access denied");
-            return result;
+            const auth = await this.authenticateUser(uid, cid);
+            if(!auth) throw new Error ("Unauthorised");
+            const result = await CommentModel.findById(cid);
+            if (!result) throw new Error("Comment not found");
+            const resp = await result.remove();
+            return resp;
         } catch (err) {
+            throw err;
+        }
+    }
+
+
+    //authenticates user for udpate and delete operations on comment
+    async authenticateUser(uid, cid){
+        try{
+            const comment = await CommentModel.findById(cid);
+            if(!comment) throw new Error ("Comment Not Found");
+            if(comment.uid == uid) return true;
+            const post = await PostRepository.getByPid(comment.postId);
+            if(post.uid == uid) return true;
+            return false;
+        }catch(err){
             throw err;
         }
     }
