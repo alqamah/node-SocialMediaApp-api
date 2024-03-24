@@ -13,5 +13,11 @@ export const postSchema = new mongoose.Schema({
     imageUrl: {
         type: String,
         required: true
-    }
+    },
+    likes:[
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Like',
+        }
+    ]
 });

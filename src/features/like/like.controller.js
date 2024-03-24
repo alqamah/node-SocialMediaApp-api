@@ -1,24 +1,36 @@
-import LikeModel from "./like.model.js";
+import LikeRepository from "./like.repo.js";
 
 export default class LikeController{
-    getall(req, res){
-        return res.status(200).send(LikeModel.getall());
+    async getall(req, res){
+        try{
+            const resp = await LikeRepository.getall()
+            return res.status(200).send(resp);
+        }catch(err){
+            return res.status(500).send("Server-side Error");
+        }
     }
 
-    getbyPid(req, res){
-        const pid = req.params.pid;
-        const likes = LikeModel.getbyPid(pid);
-        const count = likes.length;
-        return res.status(200).send({likes, count});
+    async getbyPid(req, res){
+        const {pid} = req.params;
+        try{
+            const resp = await LikeRepository.getbyPid(pid);
+            return res.status(200).send(resp); 
+
+        }catch(err){
+            return res.status(500).send("Server-side Error")
+        }
+        
     }
 
-    toggleLike(req, res){
-        const pid = req.params.pid;
-        const uid = req.cookies.userId;
-        const result = LikeModel.toggleLike(pid, uid);
-        if(result)
-            return res.status(201).send("like toggled");
-        else
-            return res.status(404).send("not found!");
+    async toggleLike(req, res){
+        try{
+            const pid = req.params.pid;
+            const uid = req.cookies.userId;
+            const result = await LikeRepository.toggleLike(pid, uid);
+            return res.status(200).send({msg:"Like Toggled", post:result});
+        }catch(err){
+            return res.status(500).send("Server-side Error");
+        }
     }
+
 }

@@ -7,11 +7,18 @@ const userController = new UserController();
 
 const router = express.Router();
 
-router.post("/signin",userController.signIn);
-router.post("/signup",userController.signUp);
-router.post("/reset-password",userController.resetPassword);
-router.get("/logout",userController.logout);
 
-router.use("/getall",userController.getAll);
+router.post('/signin', (req, res)=>{ 
+    userController.signIn(req, res)
+});
+router.post('/signup', (req, res)=>{ 
+    userController.signUp(req, res)
+});
+router.post('/reset-password', (req, res)=>{ 
+    userController.resetPassword(req, res)
+});
+router.post('/logout', (req, res)=>{ 
+    userController.logout(req, res)
+});
 
 export default router;

@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import UserRepository from "./user.repository";
+import UserRepository from "./user.repo.js";
 import bcrypt from "bcrypt";
 
 export default class UserController {
