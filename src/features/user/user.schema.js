@@ -20,5 +20,8 @@ export const userSchema = new mongoose.Schema({
         type: String,
         enum : ['male', 'female'],
         required: true
+    },
+    imageUrl:{
+        type:String
     }
 });

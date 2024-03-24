@@ -1,8 +1,10 @@
 import jwt from "jsonwebtoken";
 import UserRepository from "./user.repo.js";
 import bcrypt from "bcrypt";
+import ProfileRepository from "./profile.repo.js";
 
 const userRepo = new UserRepository();
+const profileRepo = new ProfileRepository();
 
 export default class UserController {
   async signUp(req, res) {
@@ -66,4 +68,48 @@ export default class UserController {
       return res.status(400).send({ msg: "Error logging out user" });
     }
   }
+
+  async getUser(req,res){
+    try{
+      const {id} = req.params;
+      const user = await profileRepo.getUser(id);
+      res.status(200).send(user);
+    }catch(err){
+      console.log(err);
+      res.status(500).send(err);
+    }
+  }
+
+  async update(req,res) {
+    try{
+      const {name, gender} = req.body;
+      const id = req.cookies.userId;
+      const user = await profileRepo.updateProfile(id, {name, gender});
+      return res.status(200).send(user);
+    }catch(err){
+      res.status(500).send("Server-side error");
+    }
+  }
+
+  async uploadAvatar(req,res){
+    try{
+      const imageUrl = req.file.filename;
+      const id = req.cookies.userId;
+      const user = await profileRepo.uploadAvatar(id, imageUrl);
+      return res.status(200).send(user);
+    }catch(err){
+      res.status(500).send("Server-side error");
+    }
+  }
+
+  async getAll(req,res){
+    try{
+      const user = await profileRepo.getAll();
+      res.status(200).send(user);
+    }catch(err){
+      console.log(err);
+      res.status(500).send("Server-side error");
+    }
+  }
+
 }

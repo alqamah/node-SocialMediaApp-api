@@ -1,5 +1,6 @@
 //user
 
+import { upload } from '../../middleware/fileupload.middleware.js';
 import express from "express";
 import UserController from "./user.controller.js";
 
@@ -20,6 +21,22 @@ router.post('/reset-password', (req, res)=>{
 });
 router.get('/logout', (req, res)=>{ 
     userController.logout(req, res)
+});
+
+router.get('/get-details/:id', (req, res)=>{ 
+    userController.getUser(req, res)
+});
+
+router.get('/get-all-details/', (req, res)=>{ 
+    userController.getAll(req, res)
+});
+
+router.put('/update-details/:id', (req, res)=>{ 
+    userController.update(req, res)
+});
+
+router.post('/update-details/avatar', upload.single('imageUrl'),(req, res)=>{ 
+    userController.uploadAvatar(req, res)
 });
 
 export default router;
