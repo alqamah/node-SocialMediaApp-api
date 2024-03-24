@@ -13,11 +13,13 @@ router.use(jwtAuth);
 router.get('/all/',(req,res)=>{
      likeController.getall(req,res);
 });//not needed
-router.get('/:pcid',(req,res)=>{
-    likeController.getbyPCid(req,res)
+
+router.get('/:pcid', (req, res) => {
+    likeController.getbyPCid(req, res);
 });
-router.post('/toggle/:pcid',(req,res)=>{ 
-    likeController.toggleLike(req,res)
+
+router.post('/toggle/:pcid', (req, res) => {
+    likeController.toggleLike(req, res);
 });
 
 export default router;
