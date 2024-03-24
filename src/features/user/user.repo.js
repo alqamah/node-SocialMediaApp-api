@@ -7,8 +7,8 @@ export default class UserRepository{
     async signUp(user){
         try{
             const newUser = new UserModel(user);
-            await newUser.save();
-            return newUser;
+            const resp = newUser.save();
+            return resp;
         }catch(err){
             throw err;
         }
@@ -25,7 +25,7 @@ export default class UserRepository{
 
     async resetPassword(email, password){
         try{
-            let user = await UserModel.find(email);
+            let user = await UserModel.findOne({email});
             user.password = password;
             await user.save();
             return user;
