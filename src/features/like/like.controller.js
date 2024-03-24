@@ -14,7 +14,7 @@ export default class LikeController{
 
     toggleLike(req, res){
         const pid = req.params.pid;
-        const uid = req.cookies.uid;
+        const uid = req.cookies.userId;
         const result = LikeModel.toggleLike(pid, uid);
         if(result)
             return res.status(201).send("like toggled");

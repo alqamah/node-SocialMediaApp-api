@@ -45,8 +45,23 @@ export default class PostRepository{
 
     async update(pid, post){
         try{
-            let updatedPost = await PostModel.findByIdAndUpdate(pid, post, {new: true});
-            return updatedPost;
+            let updatedPost = await PostModel.findById(pid);
+            if(updatedPost.uid != post.uid) throw new Error("Unauthorized");
+            if(post.caption) updatedPost.caption = post.caption;
+            if(post.imaageUrl) updatedPost.imageUrl = post.imageUrl;
+            const resp = await updatedPost.save();
+            return resp;
+        }catch(err){
+            throw err;
+        }
+    }
+
+    async delete(pid){
+        try{
+            let deletedPost = await PostModel.findById(pid);
+            if(deletedPost.uid != uid) throw new Error("Unauthorized");
+            await PostModel.findByIdAndDelete(pid);
+            return deletedPost;
         }catch(err){
             throw err;
         }
