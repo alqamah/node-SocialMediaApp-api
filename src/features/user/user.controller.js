@@ -71,8 +71,8 @@ export default class UserController {
 
   async getUser(req,res){
     try{
-      const {id} = req.params;
-      const user = await profileRepo.getUser(id);
+      const {userId} = req.params;
+      const user = await profileRepo.getUser(userId);
       res.status(200).send(user);
     }catch(err){
       console.log(err);
@@ -83,24 +83,25 @@ export default class UserController {
   async update(req,res) {
     try{
       const {name, gender} = req.body;
-      const id = req.cookies.userId;
-      const user = await profileRepo.updateProfile(id, {name, gender});
+      const imageUrl = req.file.filename;
+      const {userId} = req.params;
+      const user = await profileRepo.updateProfile(userId, {name, gender, imageUrl});
       return res.status(200).send(user);
     }catch(err){
       res.status(500).send("Server-side error");
     }
   }
 
-  async uploadAvatar(req,res){
-    try{
-      const imageUrl = req.file.filename;
-      const id = req.cookies.userId;
-      const user = await profileRepo.uploadAvatar(id, imageUrl);
-      return res.status(200).send(user);
-    }catch(err){
-      res.status(500).send("Server-side error");
-    }
-  }
+  // async uploadAvatar(req,res){
+  //   try{
+  //     const imageUrl = req.file.filename;
+  //     const id = req.cookies.userId;
+  //     const user = await profileRepo.uploadAvatar(id, imageUrl);
+  //     return res.status(200).send(user);
+  //   }catch(err){
+  //     res.status(500).send("Server-side error");
+  //   }
+  // }
 
   async getAll(req,res){
     try{

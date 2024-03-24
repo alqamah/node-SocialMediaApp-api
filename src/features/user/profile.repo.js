@@ -28,6 +28,7 @@ export default class ProfileRepository{
             const fetchedUser = await UserModel.findById(id).select('-password -id -__v');
             if(user.name) fetchedUser.name = user.name;
             if(user.gender)  fetchedUser.gender = user.gender;
+            if(user.imageUrl) fetchedUser.imageUrl = user.imageUrl;
             const resp = await fetchedUser.save();
             return resp;
 
@@ -36,17 +37,7 @@ export default class ProfileRepository{
         }
     }
 
-    async uploadAvatar(id, imageUrl){
-        try{
-            const user = await UserModel.findById(id).select('-password -id -__v');
-            user.imageUrl = imageUrl;
-            const resp = user.save();
-            return resp;
-
-        }catch(err){
-            throw err;
-        }
-    }
+    
 
 
 }

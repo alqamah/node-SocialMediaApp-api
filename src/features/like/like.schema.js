@@ -5,8 +5,12 @@ export const likeSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref:'User'
     },
-    post:{
+    likeable:{
         type: mongoose.Schema.Types.ObjectId,
-        ref:'Post'
+        refPath:'on_model'
+    },
+    on_model:{
+        type:String,
+        enum:['Post','Comment']
     }
 });

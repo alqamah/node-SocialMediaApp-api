@@ -12,7 +12,7 @@ router.use(jwtAuth);
 
 router.get('/all',(req,res)=>{
     commentController.getall(req,res)
-});
+});//not needed
 router.get('/:pid', (req,res)=>{
     commentController.getByPid(req,res)
 });

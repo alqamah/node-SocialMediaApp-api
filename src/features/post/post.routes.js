@@ -13,7 +13,7 @@ const postController = new PostController();
 
 router.get('/all', (req,res)=>{
     postController.getall(req,res)
-});
+}); //not needed
 router.get('/:pid', (req,res)=>{
     postController.getByPid(req,res)
 });

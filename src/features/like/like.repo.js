@@ -15,39 +15,32 @@ export default class LikeRepository{
         }
     }
 
-    async getbyPid(pid){
-        try{
-            const likes = await LikeModel.find({post:pid});
-            return likes;
-        }catch(err){
-            throw err;
-        }
-    }
-
-    async toggleLike(pid, uid) {
-        try {
-          const likeExists = await LikeModel.findOne({ user: uid, post: pid });
-      
-          if (!likeExists) {
-            const like = { user: uid, post: pid };
-            const newLike = new LikeModel(like);
-            const post = await PostModel.findById(pid);
-            post.likes.push(newLike.id);
-            console.log(post);
-            await newLike.save();
-            return post;
-          } else {
-            const post = await PostModel.findByIdAndUpdate(
-              pid,
-              { $pull: { like: likeExists._id } },
-              { new: true }
-            );
-            await likeExists.deleteOne({user:uid, post:pid});
-            return post;
-          }
-        } catch (err) {
+    async getbyPCid(pcid) {
+      try {
+          const postLikes = await LikeModel.find({ likeable: pcid, on_model: 'Post' });
+          const commentLikes = await LikeModel.find({ likeable: pcid, on_model: 'Comment' });
+          return [...postLikes, ...commentLikes];
+      } catch (err) {
           throw err;
-        }
       }
+  }
 
+  async toggleLike(pcid, uid) {
+    try {
+        const likeable = await LikeModel.findOne({ likeable: pcid, user: uid });
+        const isPost = await PostModel.findById(pcid);
+
+        if (!likeable) {
+            const like = { user: uid, likeable: pcid, on_model: isPost ? 'Post' : 'Comment' };
+            const newLike = new LikeModel(like);
+            await newLike.save();
+            return newLike;
+        } else {
+            await likeable.deleteOne();
+            return null;
+        }
+    } catch (err) {
+        throw err;
+    }
+  }
 }

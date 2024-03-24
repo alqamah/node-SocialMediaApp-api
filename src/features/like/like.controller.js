@@ -13,29 +13,26 @@ export default class LikeController{
         }
     }
 
-    async getbyPid(req, res){
-        const {pid} = req.params;
-        try{
-            const resp = await likeRepo.getbyPid(pid);
-            return res.status(200).send(resp); 
+    async getbyPCid(req, res) {
+        const { pcid } = req.params;
 
-        }catch(err){
+        try {
+            const resp = await likeRepo.getbyPCid(pcid);
+            return res.status(200).send(resp);
+        } catch (err) {
             console.log(err);
-
-            return res.status(500).send("Server-side Error")
+            return res.status(500).send("Server-side Error");
         }
-        
     }
 
-    async toggleLike(req, res){
-        try{
-            const pid = req.params.pid;
+    async toggleLike(req, res) {
+        try {
+            const pcid = req.params.pcid;
             const uid = req.cookies.userId;
-            const result = await likeRepo.toggleLike(pid, uid);
-            return res.status(200).send({msg:"Like Toggled", post:result});
-        }catch(err){
+            const result = await likeRepo.toggleLike(pcid, uid);
+            return res.status(200).send({ msg: "Like Toggled", data: result });
+        } catch (err) {
             console.log(err);
-
             return res.status(500).send("Server-side Error");
         }
     }
