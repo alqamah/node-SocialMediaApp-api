@@ -9,13 +9,25 @@ const router = express.Router();
 
 const postController = new PostController();
 
-router.use(jwtAuth);
+//router.use(jwtAuth);
 
-router.get('/all', postController.getall);
-router.get('/:pid', postController.getByPid);
-router.get('/', postController.getByUid);
-router.post('/',upload.single('imageUrl'), postController.create);
-router.put('/:id',upload.single('imageUrl'), postController.update);
-router.delete('/:id', postController.delete);
+router.get('/all', (req,res)=>{
+    postController.getall(req,res)
+});
+router.get('/:pid', (req,res)=>{
+    postController.getByPid(req,res)
+});
+router.get('/', (req,res)=>{
+    postController.getByUid(req,res)
+});
+router.post('/',upload.single('imageUrl'),(req,res)=>{
+     postController.create(req,res)
+});
+router.put('/:pid',upload.single('imageUrl'),(req,res)=>{
+     postController.update(req,res)
+});
+router.delete('/:pid',(req,res)=>{
+    postController.delete(req,res)
+});
 
 export default router;

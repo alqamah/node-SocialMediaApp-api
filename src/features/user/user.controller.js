@@ -14,7 +14,7 @@ export default class UserController {
       else return res.status(400).send({ msg: "Error in user creation" });
     } catch (err) {
       console.log(err);
-      return res.status(500).send({ msg: "Server-side Error" });
+      return res.status(500).send(err);
     }
   }
 

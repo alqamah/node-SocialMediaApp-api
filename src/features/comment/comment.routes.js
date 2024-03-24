@@ -10,11 +10,21 @@ const commentController = new CommentController();
 
 router.use(jwtAuth);
 
-router.get('/all', commentController.getall);
-router.get('/:pid', commentController.getByPid);
-router.post('/:pid', commentController.postComment);
-router.delete('/:cid', commentController.deleteComment);
-router.put('/:cid',commentController.updateComment);
+router.get('/all',(req,res)=>{
+    commentController.getall(req,res)
+});
+router.get('/:pid', (req,res)=>{
+    commentController.getByPid(req,res)
+});
+router.post('/:pid', (req,res)=>{ 
+    commentController.postComment(req,res)
+});
+router.delete('/:cid',(req,res)=>{ 
+    commentController.deleteComment(req,res)
+});
+router.put('/:cid',(req,res)=>{
+    commentController.updateComment(req,res)
+});
 
 
 export default router;

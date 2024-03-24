@@ -18,7 +18,7 @@ router.post('/signin', (req, res)=>{
 router.post('/reset-password', (req, res)=>{ 
     userController.resetPassword(req, res)
 });
-router.post('/logout', (req, res)=>{ 
+router.get('/logout', (req, res)=>{ 
     userController.logout(req, res)
 });
 

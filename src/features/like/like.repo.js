@@ -24,18 +24,16 @@ export default class LikeRepository{
         }
     }
 
-    async toggleLikes(pid, uid) {
+    async toggleLike(pid, uid) {
         try {
           const likeExists = await LikeModel.findOne({ user: uid, post: pid });
       
           if (!likeExists) {
             const like = { user: uid, post: pid };
             const newLike = new LikeModel(like);
-            const post = await PostModel.findByIdAndUpdate(
-              pid,
-              { $push: { like: newLike._id } },
-              { new: true }
-            );
+            const post = await PostModel.findById(pid);
+            post.likes.push(newLike.id);
+            console.log(post);
             await newLike.save();
             return post;
           } else {
@@ -44,7 +42,7 @@ export default class LikeRepository{
               { $pull: { like: likeExists._id } },
               { new: true }
             );
-            await likeExists.remove();
+            await likeExists.deleteOne({user:uid, post:pid});
             return post;
           }
         } catch (err) {

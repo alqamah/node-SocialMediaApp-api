@@ -5,6 +5,7 @@ import PostRepository from "../post/post.repo.js";
 const CommentModel = mongoose.model("Comment", commentSchema);
 
 
+
 export default class CommentRepository {
     async getall() {
         try {
@@ -64,12 +65,13 @@ export default class CommentRepository {
 
     //authenticates user for udpate and delete operations on comment
     async authenticateUser(uid, cid){
+        const postRepo = new PostRepository();
         try{
             const comment = await CommentModel.findById(cid);
             if(!comment) throw new Error ("Comment Not Found");
-            if(comment.uid == uid) return true;
-            const post = await PostRepository.getByPid(comment.postId);
-            if(post.uid == uid) return true;
+            if(comment.userId.toString() == uid.toString()) return true;
+            const post = await postRepo.getByPid(comment.postId);
+            if(post.user.toString() == uid.toString()) return true;
             return false;
         }catch(err){
             throw err;
